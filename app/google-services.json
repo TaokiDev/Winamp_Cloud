@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "13824778407",
+    "project_id": "musiclibrary-1759e",
+    "storage_bucket": "musiclibrary-1759e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13824778407:android:c99f5dd738fd8fcf457b82",
+        "android_client_info": {
+          "package_name": "com.example.winamp_cloud"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13824778407-chff68pi4rhr3bfvtf8l0tj66noa1dvd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2Bz10zssKv2uLEa2m6SY22PHXGm0ZMDc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13824778407-chff68pi4rhr3bfvtf8l0tj66noa1dvd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
