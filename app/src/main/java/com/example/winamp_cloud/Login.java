@@ -44,7 +44,7 @@ public class Login extends AppCompatActivity {
         recoveryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Login.this, Recoverypage.class);
+                Intent intent = new Intent(Login.this, ResetPassword.class);
                 startActivity(intent);
             }
         });
