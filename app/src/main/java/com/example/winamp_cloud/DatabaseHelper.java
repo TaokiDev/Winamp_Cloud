@@ -60,11 +60,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
     }
 
-    public boolean checkLogin(String username, String password){
+    public boolean checkLogin(String email, String password){
         SQLiteDatabase db = this.getReadableDatabase();
 
         String selectQuery = "SELECT * FROM "+ TABLE_NAME + " WHERE "
-                + COLUMN_USERNAME + " = '" + username+ "' AND "
+                + COLUMN_EMAIL + " = '" + email+ "' AND "
                 + COLUMN_PASSWORD + " = '" + password + "'";
 
         Cursor cursor = db.rawQuery(selectQuery, null);

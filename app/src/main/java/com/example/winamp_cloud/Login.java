@@ -16,7 +16,7 @@ public class Login extends AppCompatActivity {
 
     //Variables
     private Button signupForm, loginButton, recoveryButton;
-    private EditText username, password;
+    private EditText email, password;
     private DatabaseHelper databaseHelper;
 
     @Override
@@ -28,7 +28,7 @@ public class Login extends AppCompatActivity {
         //Reference variables
         signupForm = findViewById(R.id.signupScreen);
         loginButton = findViewById(R.id.loginButton);
-        username = findViewById(R.id.username);
+        email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         recoveryButton = findViewById(R.id.revButton);
         databaseHelper = new DatabaseHelper(this);
@@ -44,7 +44,7 @@ public class Login extends AppCompatActivity {
         recoveryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Login.this, ResetPassword.class);
+                Intent intent = new Intent(Login.this, ShowUserInfo.class);
                 startActivity(intent);
             }
         });
@@ -52,10 +52,10 @@ public class Login extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    String usr = username.getText().toString();
+                    String em = email.getText().toString();
                     String pwd = password.getText().toString();
 
-                    if(databaseHelper.checkLogin(usr,pwd)){
+                    if(databaseHelper.checkLogin(em,pwd)){
                         Toast.makeText(Login.this, "Logged In", Toast.LENGTH_SHORT).show();
                         Intent intent = new Intent(Login.this, Homepage.class);
                         emptyFields();
@@ -71,7 +71,7 @@ public class Login extends AppCompatActivity {
     }
 
     private void emptyFields(){
-        username.setText("");
+        email.setText("");
         password.setText("");
     }
 }

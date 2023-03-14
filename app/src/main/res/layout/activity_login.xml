@@ -41,12 +41,12 @@
         app:layout_constraintVertical_bias="0.354" />
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/email"
         android:layout_width="255dp"
         android:layout_height="57dp"
         android:layout_marginStart="46dp"
         android:layout_marginEnd="35dp"
-        android:hint="Username"
+        android:hint="Email"
         android:inputType="text"
         app:fontFamily="@font/andika_new_basic"
         app:layout_constraintBottom_toBottomOf="parent"
