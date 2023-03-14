@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Winamp_Cloud">
         <activity
-            android:name=".ResetPassword"
+            android:name=".ShowUserInfo"
             android:exported="true" />
         <activity
             android:name=".Homepage"

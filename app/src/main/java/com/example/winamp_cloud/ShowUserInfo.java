@@ -2,7 +2,7 @@ package com.example.winamp_cloud;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.ContentValues;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,10 +12,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-public class ResetPassword extends AppCompatActivity {
+public class ShowUserInfo extends AppCompatActivity {
 
     private Button goBackButton, revButton;
-    private EditText currentEmail;
+    private EditText currentEmail,hiddenPassword, hiddenUsername;
     private SQLiteDatabase database;
 
     @Override
@@ -26,14 +26,15 @@ public class ResetPassword extends AppCompatActivity {
         goBackButton = findViewById(R.id.comeBackButton);
         revButton = findViewById(R.id.recoverButton);
         currentEmail = findViewById(R.id.recEmail);
+        hiddenPassword = findViewById(R.id.passHidden);
+        hiddenUsername = findViewById(R.id.username);
 
         // Initialize database
         database = openOrCreateDatabase("winampusers.db", MODE_PRIVATE, null);
-
         goBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(ResetPassword.this, Login.class);
+                Intent intent = new Intent(ShowUserInfo.this, Login.class);
                 startActivity(intent);
             }
         });
@@ -44,13 +45,34 @@ public class ResetPassword extends AppCompatActivity {
                 String email = currentEmail.getText().toString().trim();
 
                 //Evades to left the Email field in blank
-                if(email.isEmpty()){
-                    Toast.makeText(ResetPassword.this,"Email field cannot left in blank!", Toast.LENGTH_SHORT);
-                }else{
+                if (email.isEmpty()) {
+                    Toast.makeText(ShowUserInfo.this, "Email field cannot left in blank!", Toast.LENGTH_SHORT).show();
+                } else {
+
                     Cursor cursor = database.rawQuery("SELECT * FROM users WHERE email=?", new String[]{email});
 
+                    if (cursor.moveToFirst()) {
+                        //User was found so it displays their password
+                        @SuppressLint("Range") String password = cursor.getString(cursor.getColumnIndex("password"));
+                        if(hiddenPassword.getVisibility() == View.GONE){
+                            hiddenPassword.setText(password);
+                            hiddenPassword.setVisibility(View.VISIBLE);
+                        }else{
+                            hiddenPassword.setVisibility(View.GONE);
+                        }
+                    } else {
+                        Toast.makeText(ShowUserInfo.this, "No user found with that email", Toast.LENGTH_SHORT).show();
+                    }
+                    cursor.close();
                 }
             }
         });
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        database.close();
     }
 }
