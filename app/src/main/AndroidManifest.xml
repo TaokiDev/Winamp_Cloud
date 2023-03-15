@@ -10,6 +10,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Winamp_Cloud">
         <activity
+            android:name=".MusicPlayer"
+            android:exported="true" />
+        <activity
             android:name=".ShowUserInfo"
             android:exported="true" />
         <activity
