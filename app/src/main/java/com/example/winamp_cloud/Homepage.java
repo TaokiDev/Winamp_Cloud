@@ -2,6 +2,7 @@ package com.example.winamp_cloud;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,7 +25,7 @@ public class Homepage extends AppCompatActivity {
     private ListView songsListView;
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
-    private MediaPlayer mediaPlayer;
+    private MediaPlayerHandler mediaPlayerHandler;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,44 +51,37 @@ public class Homepage extends AppCompatActivity {
                         songsListView.setAdapter(adapter);
 
                         // Set listener for ListView
-                        songsListView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+                        songsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id){
-                                //Get URL of the selected song
+                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                if (mediaPlayerHandler != null) {
+                                    mediaPlayerHandler.stop();
+                                }
+
                                 StorageReference songRef = listResult.getItems().get(position);
                                 songRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
                                     public void onSuccess(Uri uri) {
-                                        //Initiate MediaPlayer and set data source to URL of selected song
-                                        mediaPlayer = new MediaPlayer();
-                                        try {
-                                            mediaPlayer.setDataSource(uri.toString());
-                                            mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
-                                                @Override
-                                                public void onPrepared(MediaPlayer mp) {
-                                                    // Play the music when Media player is ready
-                                                    mediaPlayer.start();
-                                                }
-                                            });
-                                            mediaPlayer.prepareAsync();
-                                        } catch (IOException e) {
-                                            e.printStackTrace();
-                                        }
+                                        Intent intent = new Intent(Homepage.this, MediaPlayerActivity.class);
+                                        intent.putExtra("songUrl", uri.toString());
+                                        startActivity(intent);
                                     }
                                 });
-
                             }
                         });
+
                     }
                 });
     }
 
-    @Override
-    protected void onDestroy(){
-        super.onDestroy();
-        if(mediaPlayer != null){
-            mediaPlayer.release();
-            mediaPlayer = null;
-        }
+    public MediaPlayerHandler getMediaPlayerHandler() {
+        return mediaPlayerHandler;
+    }
+
+    public void setMediaPlayerHandler(MediaPlayerHandler mediaPlayerHandler) {
+        this.mediaPlayerHandler = mediaPlayerHandler;
     }
 }
+
+
+
