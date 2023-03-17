@@ -9,16 +9,32 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import org.jetbrains.annotations.NotNull;
+
 public class Register extends AppCompatActivity {
 
     //Variables
     Button loginForm,signup;
     EditText user, password, email, confirmPassword;
 
+    private FirebaseAuth firebaseAuth;
+    private FirebaseFirestore firestore;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+
+        //Initialize Firebase Auth and Firebase instances
+        firebaseAuth = FirebaseAuth.getInstance();
+        firestore = FirebaseFirestore.getInstance();
 
         //Reference variables
         loginForm = findViewById(R.id.gobackButton);
@@ -27,8 +43,6 @@ public class Register extends AppCompatActivity {
         password = findViewById(R.id.password);
         email = findViewById(R.id.email);
         confirmPassword = findViewById(R.id.confirmPassword);
-
-
 
         //Cancel sign up and go back to login screen
         loginForm.setOnClickListener(new View.OnClickListener() {
@@ -62,11 +76,26 @@ public class Register extends AppCompatActivity {
                     }
 
                     else{
-                        DatabaseHelper db = new DatabaseHelper(Register.this);
-                        db.insertUser(user.getText().toString().trim(),
-                                password.getText().toString().trim(),
-                                email.getText().toString().trim());
-                        Toast.makeText(getApplicationContext(),"User registered successfully", Toast.LENGTH_SHORT);
+                        /*
+                        Created a custom user class because it's needed to pass more than one parameter
+                        */
+                        firebaseAuth.createUserWithEmailAndPassword(email.getText().toString().trim(), password.getText().toString().trim())
+                                .addOnCompleteListener(Register.this, new OnCompleteListener<AuthResult>(){
+                                    @Override
+                                    public void onComplete(@NotNull Task<AuthResult> task){
+
+                                        if(task.isSuccessful()){
+                                        //Sign up success, the UI are update to the user data
+                                            FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+                                            User userObj = new User(user.getText().toString().trim(), email.getText().toString().trim());
+                                            firestore.collection("users").document(firebaseUser.getUid()).set(userObj);
+                                            Toast.makeText(getApplicationContext(),"User Registered Successfully", Toast.LENGTH_SHORT).show();
+                                            finish();
+                                        }else{
+                                            Toast.makeText(getApplicationContext(),"Registration Failed", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                     }
 
                 }

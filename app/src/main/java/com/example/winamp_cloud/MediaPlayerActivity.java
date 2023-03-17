@@ -3,13 +3,18 @@ package com.example.winamp_cloud;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
 public class MediaPlayerActivity extends AppCompatActivity {
 
     private MediaPlayerHandler mediaPlayerHandler;
+    private TextView title;
+    private SeekBar seekBar;
+    private Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,6 +22,10 @@ public class MediaPlayerActivity extends AppCompatActivity {
         setContentView(R.layout.activity_media_player);
 
         String songUrl = getIntent().getStringExtra("songUrl");
+        String songTitle = getIntent().getStringExtra("songTitle");
+
+        title = findViewById(R.id.title);
+        title.setText(songTitle);
 
         mediaPlayerHandler = new MediaPlayerHandler();
         mediaPlayerHandler.start(songUrl);
@@ -42,10 +51,45 @@ public class MediaPlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mediaPlayerHandler.stop();
-                finish();
             }
         });
 
+        seekBar = findViewById(R.id.seekBar);
+        if (mediaPlayerHandler != null) {
+            seekBar.setMax(mediaPlayerHandler.getDuration());
+        }
+
+        //Updates the SeekBar progress
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (mediaPlayerHandler != null) {
+                    int currentPosition = mediaPlayerHandler.getCurrentPosition();
+                    seekBar.setProgress(currentPosition);
+                }
+                handler.postDelayed(this, 1000);
+            }
+        }, 1000);
+
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (fromUser) {
+                    mediaPlayerHandler.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+
+        });
     }
 
     @Override
