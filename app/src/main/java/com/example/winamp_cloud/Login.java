@@ -10,6 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 
 public class Login extends AppCompatActivity {
@@ -17,7 +22,8 @@ public class Login extends AppCompatActivity {
     //Variables
     private Button signupForm, loginButton, recoveryButton;
     private EditText email, password;
-    private DatabaseHelper databaseHelper;
+
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +37,8 @@ public class Login extends AppCompatActivity {
         email = findViewById(R.id.email);
         password = findViewById(R.id.password);
         recoveryButton = findViewById(R.id.revButton);
-        databaseHelper = new DatabaseHelper(this);
+
+        firebaseAuth = FirebaseAuth.getInstance();
 
         signupForm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,7 +51,7 @@ public class Login extends AppCompatActivity {
         recoveryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Login.this, ShowUserInfo.class);
+                Intent intent = new Intent(Login.this, ResetPassword.class);
                 startActivity(intent);
             }
         });
@@ -52,22 +59,44 @@ public class Login extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                    String em = email.getText().toString();
-                    String pwd = password.getText().toString();
 
-                    if(databaseHelper.checkLogin(em,pwd)){
-                        Toast.makeText(Login.this, "Logged In", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent(Login.this, Homepage.class);
-                        emptyFields();
-                        startActivity(intent);
-                    }else{
-                        Toast.makeText(Login.this, "Invalid Parameters", Toast.LENGTH_SHORT).show();
-                    }
-
-
+                if(!checkEmpty()){
+                    firebaseAuth.signInWithEmailAndPassword(email.getText().toString().trim(), password.getText().toString().trim())
+                            .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(Task<AuthResult> task) {
+                                    if(task.isSuccessful()){
+                                        //Sign in success, UI update with the user data
+                                        FirebaseUser user = firebaseAuth.getCurrentUser();
+                                        Toast.makeText(getApplicationContext(),"Auhentication successful", Toast.LENGTH_SHORT).show();
+                                        emptyFields();
+                                        Intent intent = new Intent(Login.this, Homepage.class);
+                                        startActivity(intent);
+                                    }else{
+                                        Toast.makeText(getApplicationContext(),"Something went wrong in authentication, try again", Toast.LENGTH_SHORT).show();
+                                        emptyFields();
+                                    }
+                                }
+                            });
+                }
             }
         });
 
+    }
+
+    private boolean checkEmpty() {
+        if(email.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(),"Email field left empty",Toast.LENGTH_SHORT).show();
+            return true;
+        }else if(password.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(),"Password field left empty", Toast.LENGTH_SHORT).show();
+            return true;
+        }else if(email.getText().toString().isEmpty() && password.getText().toString().isEmpty()){
+            Toast.makeText(getApplicationContext(),"No info provided", Toast.LENGTH_SHORT).show();
+            return true;
+        }else{
+            return false;
+        }
     }
 
     private void emptyFields(){
