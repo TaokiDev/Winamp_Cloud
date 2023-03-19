@@ -77,21 +77,9 @@
             android:layout_width="59dp"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
-            android:src="@drawable/ic_action_playback_play" />
-
-        <ImageButton
-            android:id="@+id/pause_button"
-            android:layout_width="45dp"
-            android:layout_height="51dp"
-            android:background="@android:color/transparent"
             android:src="@drawable/ic_action_playback_pause" />
 
-        <ImageButton
-            android:id="@+id/stop_button"
-            android:layout_width="50dp"
-            android:layout_height="51dp"
-            android:background="@android:color/transparent"
-            android:src="@drawable/ic_action_playback_stop" />
+
 
         <ImageButton
             android:id="@+id/next_button"

@@ -12,9 +12,10 @@ import android.widget.TextView;
 public class MediaPlayerActivity extends AppCompatActivity {
 
     private MediaPlayerHandler mediaPlayerHandler;
-    private TextView title;
+    private TextView title, currentDuration, totalDuration;
     private SeekBar seekBar;
     private Handler handler = new Handler();
+    private boolean isPlaying = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
         title = findViewById(R.id.title);
         title.setText(songTitle);
+        seekBar = findViewById(R.id.seekBar);
 
         mediaPlayerHandler = new MediaPlayerHandler();
         mediaPlayerHandler.start(songUrl);
@@ -34,67 +36,40 @@ public class MediaPlayerActivity extends AppCompatActivity {
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mediaPlayerHandler.start(songUrl);
-            }
-        });
-
-        ImageButton pauseButton = findViewById(R.id.pause_button);
-        pauseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mediaPlayerHandler.pause();
-            }
-        });
-
-        ImageButton stopButton = findViewById(R.id.stop_button);
-        stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mediaPlayerHandler.stop();
-            }
-        });
-
-        seekBar = findViewById(R.id.seekBar);
-        if (mediaPlayerHandler != null) {
-            seekBar.setMax(mediaPlayerHandler.getDuration());
-        }
-
-        //Updates the SeekBar progress
-        handler.postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (mediaPlayerHandler != null) {
-                    int currentPosition = mediaPlayerHandler.getCurrentPosition();
-                    seekBar.setProgress(currentPosition);
+                if(!isPlaying){
+                    mediaPlayerHandler.pause();
+                    playButton.setImageResource(R.drawable.ic_action_playback_play);
+                }else{
+                    mediaPlayerHandler.resume();
+                    playButton.setImageResource(R.drawable.ic_action_playback_pause);
                 }
-                handler.postDelayed(this, 1000);
+                isPlaying = !isPlaying;
             }
-        }, 1000);
-
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-                if (fromUser) {
-                    mediaPlayerHandler.seekTo(progress);
-                }
-            }
-
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-
-            }
-
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-
-            }
-
         });
+
+        handler.postDelayed(updateSeekBarRunnable, 1000);
+
     }
 
     @Override
-    protected void onDestroy(){
+    protected void onDestroy () {
         super.onDestroy();
+        handler.removeCallbacks(updateSeekBarRunnable);
+        mediaPlayerHandler.stop();
         mediaPlayerHandler.release();
     }
+
+    private Runnable updateSeekBarRunnable = new Runnable() {
+        @Override
+        public void run() {
+            int currentPosition = mediaPlayerHandler.getCurrentPosition();
+            int totalDuration = mediaPlayerHandler.getDuration();
+
+            seekBar.setMax(totalDuration);
+            seekBar.setProgress(currentPosition);
+
+            handler.postDelayed(this, 1000);
+        }
+    };
+
 }
