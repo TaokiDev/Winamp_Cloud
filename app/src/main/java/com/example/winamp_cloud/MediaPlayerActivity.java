@@ -32,6 +32,8 @@ public class MediaPlayerActivity extends AppCompatActivity {
         mediaPlayerHandler = new MediaPlayerHandler();
         mediaPlayerHandler.start(songUrl);
 
+        mediaPlayerHandler.setProgressListener(seekBar, handler);
+
         ImageButton playButton = findViewById(R.id.play_button);
         playButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -50,6 +52,8 @@ public class MediaPlayerActivity extends AppCompatActivity {
         handler.postDelayed(updateSeekBarRunnable, 1000);
 
     }
+
+
 
     @Override
     protected void onDestroy () {
