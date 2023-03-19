@@ -4,11 +4,12 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Users/Kryss/AndroidStudioProjects/Winamp_Cloud/app/src/main/res/drawable/ic_launcher_background.xml" value="0.240625" />
+        <entry key="..\:/Users/Kryss/AndroidStudioProjects/Winamp_Cloud/app/src/main/res/drawable/media_player_background.xml" value="0.1" />
         <entry key="..\:/Users/Kryss/AndroidStudioProjects/Winamp_Cloud/app/src/main/res/drawable/splash_bg_color.xml" value="0.1037037037037037" />
         <entry key="..\:/Users/Kryss/AndroidStudioProjects/Winamp_Cloud/app/src/main/res/layout/activity_homepage.xml" value="0.22" />
         <entry key="..\:/Users/Kryss/AndroidStudioProjects/Winamp_Cloud/app/src/main/res/layout/activity_login.xml" value="0.25" />
         <entry key="..\:/Users/Kryss/AndroidStudioProjects/Winamp_Cloud/app/src/main/res/layout/activity_main.xml" value="0.25" />
-        <entry key="..\:/Users/Kryss/AndroidStudioProjects/Winamp_Cloud/app/src/main/res/layout/activity_media_player.xml" value="0.25" />
+        <entry key="..\:/Users/Kryss/AndroidStudioProjects/Winamp_Cloud/app/src/main/res/layout/activity_media_player.xml" value="0.22" />
         <entry key="..\:/Users/Kryss/AndroidStudioProjects/Winamp_Cloud/app/src/main/res/layout/activity_music_player.xml" value="0.16494845360824742" />
         <entry key="..\:/Users/Kryss/AndroidStudioProjects/Winamp_Cloud/app/src/main/res/layout/activity_recoverypage.xml" value="0.22" />
         <entry key="..\:/Users/Kryss/AndroidStudioProjects/Winamp_Cloud/app/src/main/res/layout/activity_register.xml" value="0.25" />

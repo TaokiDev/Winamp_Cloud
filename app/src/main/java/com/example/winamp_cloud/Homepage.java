@@ -3,7 +3,6 @@ package com.example.winamp_cloud;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +16,6 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.ListResult;
 import com.google.firebase.storage.StorageReference;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class Homepage extends AppCompatActivity {
