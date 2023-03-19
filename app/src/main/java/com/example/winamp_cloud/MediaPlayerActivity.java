@@ -27,12 +27,29 @@ public class MediaPlayerActivity extends AppCompatActivity {
 
         title = findViewById(R.id.title);
         title.setText(songTitle);
+
         seekBar = findViewById(R.id.seekBar);
 
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser){
+                    mediaPlayerHandler.seekTo(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         mediaPlayerHandler = new MediaPlayerHandler();
         mediaPlayerHandler.start(songUrl);
-
-        mediaPlayerHandler.setProgressListener(seekBar, handler);
 
         ImageButton playButton = findViewById(R.id.play_button);
         playButton.setOnClickListener(new View.OnClickListener() {
@@ -52,8 +69,6 @@ public class MediaPlayerActivity extends AppCompatActivity {
         handler.postDelayed(updateSeekBarRunnable, 1000);
 
     }
-
-
 
     @Override
     protected void onDestroy () {

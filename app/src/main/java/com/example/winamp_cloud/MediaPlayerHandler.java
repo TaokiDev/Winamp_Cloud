@@ -77,7 +77,8 @@ public class MediaPlayerHandler {
     }
 
 
-    public void setProgressListener(final SeekBar seekBar, final Handler handler){
+    public void setProgressListener(final SeekBar seekBar){
+        final Handler handler = new Handler();
         final Runnable runnable = new Runnable() {
             @Override
             public void run() {
@@ -126,4 +127,9 @@ public class MediaPlayerHandler {
         }
     }
 
+    public void seekTo(int position){
+        if(mediaPlayer != null){
+            mediaPlayer.seekTo(position);
+        }
+    }
 }

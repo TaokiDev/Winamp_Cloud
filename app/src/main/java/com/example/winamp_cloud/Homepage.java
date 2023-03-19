@@ -62,6 +62,7 @@ public class Homepage extends AppCompatActivity {
                                     public void onSuccess(Uri uri) {
                                         Intent intent = new Intent(Homepage.this, MediaPlayerActivity.class);
                                         intent.putExtra("songUrl", uri.toString());
+                                        intent.putExtra("songTitle", songNames.get(position));
                                         startActivity(intent);
                                     }
                                 });
