@@ -127,4 +127,9 @@ public class MediaPlayerHandler {
         }
     }
 
+    public void seekTo(int position){
+        if(mediaPlayer != null){
+            mediaPlayer.seekTo(position);
+        }
+    }
 }
