@@ -5,6 +5,8 @@ import android.os.Handler;
 import android.widget.SeekBar;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class MediaPlayerHandler {
@@ -130,6 +132,20 @@ public class MediaPlayerHandler {
     public void seekTo(int position){
         if(mediaPlayer != null){
             mediaPlayer.seekTo(position);
+        }
+    }
+
+    public void playNextSong(ArrayList<String> songNames, int songIndex) {
+        if (songNames != null && songIndex >= 0 && songIndex < songNames.size() - 1) {
+            String nextSongUrl = songNames.get(songIndex + 1);
+            mediaPlayer.reset();
+            try {
+                mediaPlayer.setDataSource(nextSongUrl);
+                mediaPlayer.prepare();
+                mediaPlayer.start();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 }

@@ -42,7 +42,7 @@ public class ResetPassword extends AppCompatActivity {
         revButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = currentEmail.getText().toString().trim();
+                String email = currentEmail.getText().toString();
 
                 //Evades to left the Email field in blank
                 if (email.isEmpty()) {

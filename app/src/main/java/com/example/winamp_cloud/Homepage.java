@@ -24,6 +24,7 @@ public class Homepage extends AppCompatActivity {
     private FirebaseStorage firebaseStorage;
     private StorageReference storageReference;
     private MediaPlayerHandler mediaPlayerHandler;
+    private ArrayList<String> songNames;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class Homepage extends AppCompatActivity {
                 .addOnSuccessListener(new OnSuccessListener<ListResult>() {
                     @Override
                     public void onSuccess(ListResult listResult) {
-                        ArrayList<String> songNames = new ArrayList<>();
+                        songNames = new ArrayList<>();
                         for (StorageReference item : listResult.getItems()) {
                             songNames.add(item.getName());
                         }
@@ -56,6 +57,7 @@ public class Homepage extends AppCompatActivity {
                                     mediaPlayerHandler.stop();
                                 }
 
+
                                 StorageReference songRef = listResult.getItems().get(position);
                                 songRef.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
                                     @Override
@@ -63,6 +65,9 @@ public class Homepage extends AppCompatActivity {
                                         Intent intent = new Intent(Homepage.this, MediaPlayerActivity.class);
                                         intent.putExtra("songUrl", uri.toString());
                                         intent.putExtra("songTitle", songNames.get(position));
+                                        intent.putExtra("songIndex", position);
+                                        //Adding the extra to retrieve the songNames to MediaPlayerActivity
+                                        intent.putStringArrayListExtra("songNames", songNames);
                                         startActivity(intent);
                                     }
                                 });
@@ -72,6 +77,7 @@ public class Homepage extends AppCompatActivity {
                     }
                 });
     }
+
 
     public MediaPlayerHandler getMediaPlayerHandler() {
         return mediaPlayerHandler;
