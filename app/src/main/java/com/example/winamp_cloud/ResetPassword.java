@@ -27,6 +27,7 @@ public class ResetPassword extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reset_password);
 
+        firebaseAuth = FirebaseAuth.getInstance();
         goBackButton = findViewById(R.id.comeBackButton);
         revButton = findViewById(R.id.recoverButton);
         currentEmail = findViewById(R.id.recEmail);
@@ -42,7 +43,7 @@ public class ResetPassword extends AppCompatActivity {
         revButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = currentEmail.getText().toString().trim();
+                String email = currentEmail.getText().toString();
 
                 //Evades to left the Email field in blank
                 if (email.isEmpty()) {
@@ -56,6 +57,7 @@ public class ResetPassword extends AppCompatActivity {
                                         Toast.makeText(getApplicationContext(),
                                                 "Password reset email sent. Check yor inbox.",
                                         Toast.LENGTH_LONG).show();
+                                        finish();
                                     }else{
                                         Toast.makeText(getApplicationContext(),
                                                 "Failed to send password reset email, Try Again.",
